@@ -4,23 +4,25 @@ import org.lwjgl.opengl.Display;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
-import visionCore.geom.Vector2f;
+
+import visionCore.math.FastMath;
+import visionCore.math.Vec2f;
 
 public class BasketBall {
 
-	private Vector2f pos, velocity;
+	private Vec2f pos, velocity;
 	private float decceleration, airResistance, levelHeight, rotSpeed, rot, rotSpeedDec;
 	private Image img;
 	private Rectangle r, basketR, basketWallR;
 	public boolean scoreChange, collidingBasket;
 	
-	public BasketBall(Vector2f pos, Image img, float levelHeight) {
+	public BasketBall(Vec2f pos, Image img, float levelHeight) {
 		
 		this.pos = pos;
 		this.img = img;
 		this.levelHeight = levelHeight;
 		
-		velocity = new Vector2f(0f, 0f);
+		velocity = new Vec2f(0f, 0f);
 		decceleration = 0.002f;
 		airResistance = 0.0002f;
 		
@@ -39,14 +41,12 @@ public class BasketBall {
 	public void update(int delta) {
 		
 		move(delta);
-		r.setLocation(pos);
-		
+		r.setLocation(pos.x, pos.y);
 	}
 	
 	public void render(Graphics g, float camY) {
 		
-		img.drawEmbedded(pos.x, pos.y - camY, 64f, 64f, rot);
-		
+		img.drawEmbedded(pos.x, pos.y - camY, 64f, 64f /*,rot*/);
 	}
 	
 	private void move(int delta) {
@@ -65,7 +65,7 @@ public class BasketBall {
 			velocity.x += airResistance * (velocity.x * velocity.x) * delta;
 		}
 		
-		r.setLocation(pos);
+		r.setLocation(pos.x, pos.y);
 		
 		if (checkCollision()) {
 			
@@ -112,9 +112,9 @@ public class BasketBall {
 			velocity.x = -velocity.x;
 			pos.x = 33f;
 			collided = true;
-		} else if (pos.x > StartingClass.data.displayWidth - 32f - 56f) {
+		} else if (pos.x > Display.getWidth() - 32f - 56f) {
 			velocity.x = -velocity.x;
-			pos.x = StartingClass.data.displayWidth - 32f - 56f - 1f;
+			pos.x = Display.getWidth() - 32f - 56f - 1f;
 			collided = true;
 		}
 		
@@ -151,12 +151,12 @@ public class BasketBall {
 		return collided;
 	}
 	
-	public void setPos(Vector2f pos) { this.pos = pos; }
-	public Vector2f getPos() { return pos; }
+	public void setPos(Vec2f pos) { this.pos.set(pos); }
+	public Vec2f getPos() { return pos; }
 	
-	public void setVelocity(Vector2f velocity) { this.velocity = velocity; }
+	public void setVelocity(Vec2f velocity) { this.velocity = velocity; }
 	public void setVelocity(float x, float y) { velocity.set(x, y); }
-	public Vector2f getVelocity() { return velocity; }
+	public Vec2f getVelocity() { return velocity; }
 	
 	public Rectangle getR() { return r; }
 	

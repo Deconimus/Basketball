@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import visionCore.geom.Vector2f;
+
+import visionCore.math.Vec2f;
 
 public class Lights {
 
@@ -24,11 +25,11 @@ public class Lights {
 	
 	private void generate() {
 		
-		lights.add(new LightSpot(new Vector2f(-img.getWidth() / 3f, 121 * 64f - img.getHeight() * 0.5f), 2f));
-		lights.add(new LightSpot(new Vector2f(12 * 64f - img.getWidth() + img.getWidth() / 3f, 121 * 64f - img.getHeight() * 0.5f), 2f));
+		lights.add(new LightSpot(new Vec2f(-img.getWidth() / 3f, 121 * 64f - img.getHeight() * 0.5f), 2f));
+		lights.add(new LightSpot(new Vec2f(12 * 64f - img.getWidth() + img.getWidth() / 3f, 121 * 64f - img.getHeight() * 0.5f), 2f));
 		
-		lights.add(new LightSpot(new Vector2f(-img.getWidth() / 3f, 108 * 64f - img.getHeight() * 0.5f), 2f));
-		lights.add(new LightSpot(new Vector2f(12 * 64f - img.getWidth() + img.getWidth() / 3f, 108 * 64f - img.getHeight() * 0.5f), 2f));
+		lights.add(new LightSpot(new Vec2f(-img.getWidth() / 3f, 108 * 64f - img.getHeight() * 0.5f), 2f));
+		lights.add(new LightSpot(new Vec2f(12 * 64f - img.getWidth() + img.getWidth() / 3f, 108 * 64f - img.getHeight() * 0.5f), 2f));
 		
 	}
 	
@@ -55,12 +56,12 @@ public class Lights {
 	
 	private class LightSpot {
 		
-		public Vector2f pos;
+		public Vec2f pos;
 		public float scale;
 		
-		public LightSpot(Vector2f pos, float scale) {
+		public LightSpot(Vec2f pos, float scale) {
 			
-			this.pos = new Vector2f(pos);
+			this.pos = new Vec2f(pos);
 			this.scale = scale;
 			
 		}

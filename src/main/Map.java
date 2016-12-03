@@ -5,7 +5,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import visionCore.geom.Vector2f;
 
 public class Map {
 
@@ -141,7 +140,7 @@ public class Map {
 			for (int j = 0; j < map[0].length; j++) {
 				for (int k = 0; k < map[0][0].length; k++) {
 					
-					if (k * 64f - camY + 64f > 0f && k * 64f - camY - 64f < StartingClass.data.displayHeight && map[i][j][k] != 0) {
+					if (k * 64f - camY + 64f > 0f && k * 64f - camY - 64f < Display.getHeight() && map[i][j][k] != 0) {
 					
 						idY = map[i][j][k] / 4;
 						idX = map[i][j][k] - 4 * idY;

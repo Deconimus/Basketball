@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.lwjgl.opengl.Display;
-import visionCore.geom.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,9 +14,11 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
-import visionCore.geom.Vector2f;
 import org.newdawn.slick.opengl.shader.ShaderProgram;
 import org.newdawn.slick.util.ResourceLoader;
+
+import visionCore.geom.Color;
+import visionCore.math.Vec2f;
 
 public class Level {
 
@@ -29,11 +30,11 @@ public class Level {
 	private BasketBall ball;
 	private Map map;
 	
-	private Vector2f mousePos;
+	private Vec2f mousePos;
 	private boolean makeLine;
 	private Rectangle mouseR;
 	
-	private Vector2f linePointA, linePointB;
+	private Vec2f linePointA, linePointB;
 	
 	ShaderProgram darkenShader;
 	
@@ -47,17 +48,17 @@ public class Level {
 		
 		map = new Map();
 		
-		levelWidth = StartingClass.data.displayWidth;
+		levelWidth = Display.getWidth();
 		levelHeight = map.getLevelHeight();
 		
-		ball = new BasketBall(new Vector2f(StartingClass.data.displayWidth / 2f, levelHeight - StartingClass.data.displayHeight * 0.5f), map.getSpriteSheet().getSprite(0, 0), levelHeight);
+		ball = new BasketBall(new Vec2f(Display.getWidth() / 2f, levelHeight - Display.getHeight() * 0.5f), map.getSpriteSheet().getSprite(0, 0), levelHeight);
 		camera = new Camera(levelWidth, levelHeight);
 		
-		mousePos = new Vector2f();
-		mouseR = new Rectangle(mousePos.x, mousePos.y, 24, 24);
+		mousePos = new Vec2f();
+		mouseR = new Rectangle(mousePos.x, mousePos.y, 24f, 24f);
 		makeLine = false;
 		
-		linePointA = new Vector2f(); linePointB = new Vector2f();
+		linePointA = new Vec2f(); linePointB = new Vec2f();
 		
 		bg = new Image("textures/bg.png");
 		
@@ -120,6 +121,7 @@ public class Level {
 		darkenShader.unbind();
 		
 		if (makeLine) {
+			
 			g.setColor(Color.black);
 			g.drawLine(linePointA.x, linePointA.y, mousePos.x, mousePos.y);
 			g.setColor(Color.white);
@@ -143,20 +145,20 @@ public class Level {
 		mousePos.x = input.getMouseX();
 		mousePos.y = input.getMouseY();
 		
-		mouseR.setLocation(mousePos);
+		mouseR.setLocation(mousePos.x, mousePos.y);
 		
 		Rectangle ballR = ball.getR();
 		ballR.setLocation(ball.getR().getX(), ball.getR().getY() - camera.getPos().y);
 		
 		if (mouseR.intersects(ballR)) {
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-				linePointA = new Vector2f(ball.getPos().x + 32f, ball.getPos().y + 32f - camera.getPos().y);
+				linePointA = new Vec2f(ball.getPos().x + 32f, ball.getPos().y + 32f - camera.getPos().y);
 				makeLine = true;
 			}
 		}
 		
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) == false && makeLine) {
-			linePointB = new Vector2f(mousePos);
+			linePointB = new Vec2f(mousePos);
 			pushBasketBall();
 			makeLine = false;
 		}
@@ -165,7 +167,7 @@ public class Level {
 	
 	private void pushBasketBall() {
 		
-		Vector2f diff = new Vector2f(0f, 0f);
+		Vec2f diff = new Vec2f(0f, 0f);
 		
 		diff.x = linePointB.x - linePointA.x;
 		diff.y = linePointB.y - linePointA.y;
