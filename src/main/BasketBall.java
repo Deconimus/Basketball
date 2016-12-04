@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
+import visionCore.geom.Color;
 import visionCore.math.FastMath;
 import visionCore.math.Vec2f;
 
@@ -41,12 +42,15 @@ public class BasketBall {
 	public void update(int delta) {
 		
 		move(delta);
-		r.setLocation(pos.x, pos.y);
 	}
 	
 	public void render(Graphics g, float camY) {
 		
-		img.drawEmbedded(pos.x, pos.y - camY, 64f, 64f /*,rot*/);
+		img.startUse();
+		
+			img.drawEmbedded(pos.x, pos.y - camY, 64f, 64f/*, rot*/);
+		
+		img.endUse();
 	}
 	
 	private void move(int delta) {
@@ -65,7 +69,8 @@ public class BasketBall {
 			velocity.x += airResistance * (velocity.x * velocity.x) * delta;
 		}
 		
-		r.setLocation(pos.x, pos.y);
+		r.setX(pos.x);
+		r.setY(pos.y);
 		
 		if (checkCollision()) {
 			
@@ -76,9 +81,12 @@ public class BasketBall {
 
 			rotSpeedDec = 0f;
 			
+			r.setX(pos.x);
+			r.setY(pos.y);
 		}
 		
 		if ((velocity.x > 0f && velocity.x < 0.01f) || (velocity.x < 0f && velocity.x > -0.01f)) {
+			
 			velocity.x = 0f;
 		}
 		
@@ -99,9 +107,13 @@ public class BasketBall {
 			rot += rotSpeed * delta;
 		}
 		
+		rot = FastMath.normalizeCircular(rot, 0f, 360f);
+		
 		pos.x += velocity.x * delta;
 		pos.y += velocity.y * delta;
 		
+		r.setX(pos.x);
+		r.setY(pos.y);
 	}
 	
 	private boolean checkCollision() {
@@ -132,7 +144,9 @@ public class BasketBall {
 		}
 		
 		if (r.intersects(basketWallR)) {
-			if (r.getMaxX() > basketWallR.getX()) {
+			
+			if (pos.x + r.getWidth() > basketWallR.getX()) {
+				
 				velocity.x = -velocity.x;
 				pos.x = basketWallR.getX() - 64f - 1f;
 				collided = true;
@@ -151,7 +165,7 @@ public class BasketBall {
 		return collided;
 	}
 	
-	public void setPos(Vec2f pos) { this.pos.set(pos); }
+	public void setPos(Vec2f pos) { this.pos.set(pos); this.r.setLocation(pos.x, pos.y); }
 	public Vec2f getPos() { return pos; }
 	
 	public void setVelocity(Vec2f velocity) { this.velocity = velocity; }

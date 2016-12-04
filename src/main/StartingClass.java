@@ -1,5 +1,7 @@
 package main;
 
+import java.io.File;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -8,15 +10,26 @@ import org.newdawn.slick.SlickException;
 
 public class StartingClass extends BasicGame {
 
+	
 	public Level level;
+	
+	public static String abspath;
 	
 	private static boolean started;
 	
+	
 	public StartingClass() {
+		
 		super("Basketball by Deconimus");
 	}
 	
+	
 	public static void main(String args[]) throws SlickException {
+		
+		setAbspath();
+		
+		System.setProperty("org.lwjgl.librarypath", new File(abspath+"/bin/natives/windows&linux").getAbsolutePath());
+		System.out.println(System.getProperty("org.lwjgl.librarypath"));
 		
 		AppGameContainer game = new AppGameContainer(new StartingClass());
 		
@@ -27,6 +40,7 @@ public class StartingClass extends BasicGame {
 		game.start();
 		
 	}
+	
 	
 	@Override
 	public void init(GameContainer gc) throws SlickException {
@@ -48,6 +62,26 @@ public class StartingClass extends BasicGame {
 		if (started) {
 			level.render(gc, g);
 		}
+	}
+	
+	
+	private static void setAbspath() {
+		
+		try {
+			
+			abspath = new File(StartingClass.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath().replace("\\", "/");
+			
+			if (abspath.endsWith("/bin")) {
+				
+				abspath = abspath.substring(0, abspath.indexOf("/bin"));
+			}
+			
+			if (abspath.endsWith(".jar")) {
+				
+				abspath = new File(abspath).getParentFile().getAbsolutePath();
+			}
+			
+		} catch (Exception e) { e.printStackTrace(); }
 	}
 	
 }

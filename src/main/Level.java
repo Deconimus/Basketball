@@ -103,14 +103,20 @@ public class Level {
 		
 		map.getSpriteSheet().startUse();
 		
-		map.renderBack(g, camera.getPos().y);
-		ball.render(g, camera.getPos().y);
-		
-		map.getSpriteSheet().endUse();
+			map.renderBack(g, camera.getPos().y);
+			map.getSpriteSheet().endUse();
 		
 		darkenShader.unbind();
 		
 		renderScore(g);
+		
+		darkenShader.bind();
+		darkenShader.setUniform1f("uSubs", 0.55f);
+		
+			ball.render(g, camera.getPos().y);
+		
+		darkenShader.unbind();
+		
 		lights.render(g, camera.getPos().y);
 		
 		darkenShader.bind();
@@ -132,10 +138,11 @@ public class Level {
 	private void renderScore(Graphics g) {
 		
 		String scoreString = (score / 10)+""+(score - (int)(score / 10) * 10);
-		g.setColor(Color.black);
-		g.setFont(font);
-		g.drawString(scoreString, 10f * 64f + (64f - font.getWidth(scoreString) / 2f), 120f * 64f + (64f - font.getHeight()) * 0.5f + 2f - camera.getPos().y);
 		
+		g.setFont(font);
+		g.setColor(Color.black);
+		
+		g.drawString(scoreString, 10f * 64f + (64f - font.getWidth(scoreString) / 2f), 120f * 64f + (64f - font.getHeight()) * 0.5f + 2f - camera.getPos().y);
 	}
 	
 	private void handleInput(GameContainer gc) throws SlickException {
@@ -151,13 +158,16 @@ public class Level {
 		ballR.setLocation(ball.getR().getX(), ball.getR().getY() - camera.getPos().y);
 		
 		if (mouseR.intersects(ballR)) {
+			
 			if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				
 				linePointA = new Vec2f(ball.getPos().x + 32f, ball.getPos().y + 32f - camera.getPos().y);
 				makeLine = true;
 			}
 		}
 		
 		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) == false && makeLine) {
+			
 			linePointB = new Vec2f(mousePos);
 			pushBasketBall();
 			makeLine = false;
@@ -173,7 +183,7 @@ public class Level {
 		diff.y = linePointB.y - linePointA.y;
 		
 		diff.x *= 0.009f;
-		diff.y *= 0.009;
+		diff.y *= 0.009f;
 		
 		ball.setVelocity(diff);
 		

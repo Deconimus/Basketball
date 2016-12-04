@@ -13,7 +13,6 @@ public class Camera {
 		this.levelWidth = levelWidth; this.levelHeight = levelHeight;
 		
 		pos = new Vec2f(0f, levelHeight - Display.getHeight());
-		
 	}
 	
 	public void update(float y) {
@@ -21,11 +20,13 @@ public class Camera {
 		pos.y = y - Display.getHeight() / 2f;
 		
 		if (pos.y < 0f) {
+			
 			pos.y = 0f;
+			
 		} else if (pos.y > levelHeight - Display.getHeight()) {
+			
 			pos.y = levelHeight - Display.getHeight();
 		}
-		
 	}
 	
 	public void setPos(Vec2f pos) { this.pos = pos; }
