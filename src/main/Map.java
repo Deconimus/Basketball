@@ -8,8 +8,8 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Map {
 
-	private int[][][] map;
-	private SpriteSheet spriteSheet;
+	public int[][][] map;
+	public SpriteSheet spriteSheet;
 	
 	public Map() throws SlickException {
 		
@@ -27,7 +27,6 @@ public class Map {
 				for (int k = 0; k < map[0][0].length; k++) {
 					
 					map[i][j][k] = 0;
-					
 				}
 			}
 		}
@@ -44,7 +43,6 @@ public class Map {
 				} else if (j < map[0][0].length) { 
 					map[0][i][j] = 2;
 				}
-				
 			}
 		}
 		
@@ -125,10 +123,11 @@ public class Map {
 		
 		//lights
 		
-		map[1][0][121] = 26;
-		map[1][12][121] = 27;
-		map[1][0][108] = 26;
-		map[1][12][108] = 27;
+		for (int i = 121; i > 0; i -= 13) {
+			
+			map[1][0][i] = 26;
+			map[1][12][i] = 27;
+		}
 		
 	}
 	
@@ -146,9 +145,7 @@ public class Map {
 						idX = map[i][j][k] - 4 * idY;
 						
 						spriteSheet.getSprite(idX, idY).drawEmbedded(64f * j, 64f * k - camY, 64f, 64f);
-						
 					}
-					
 				}
 			}
 		}

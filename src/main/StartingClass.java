@@ -28,8 +28,8 @@ public class StartingClass extends BasicGame {
 		
 		setAbspath();
 		
-		System.setProperty("org.lwjgl.librarypath", new File(abspath+"/bin/natives/windows&linux").getAbsolutePath());
-		System.out.println(System.getProperty("org.lwjgl.librarypath"));
+		//System.setProperty("org.lwjgl.librarypath", new File(abspath+"/bin/natives/windows&linux").getAbsolutePath());
+		//System.out.println(System.getProperty("org.lwjgl.librarypath"));
 		
 		AppGameContainer game = new AppGameContainer(new StartingClass());
 		
@@ -38,7 +38,6 @@ public class StartingClass extends BasicGame {
 		game.setDisplayMode(832, 576, false);
 		game.setTargetFrameRate(60);
 		game.start();
-		
 	}
 	
 	

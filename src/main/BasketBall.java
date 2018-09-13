@@ -32,7 +32,6 @@ public class BasketBall {
 		basketWallR = new Rectangle(12f * 64f - 4f, 122f * 64f + 4f, 16f, 128f - 16f);
 		
 		scoreChange = false; collidingBasket = false;
-		
 	}
 	
 	public void init() {
@@ -46,11 +45,7 @@ public class BasketBall {
 	
 	public void render(Graphics g, float camY) {
 		
-		img.startUse();
-		
-			img.drawEmbedded(pos.x, pos.y - camY, 64f, 64f/*, rot*/);
-		
-		img.endUse();
+		img.draw(pos.x, pos.y - camY, 64f, 64f/*, rot*/);
 	}
 	
 	private void move(int delta) {

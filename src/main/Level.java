@@ -64,7 +64,7 @@ public class Level {
 		
 		darkenShader = ShaderProgram.loadProgram("textures/darken_shader.vert", "textures/darken_shader.frag");
 		
-		lights = new Lights();
+		lights = new Lights(map);
 		
 		try {
 			InputStream fontIS = ResourceLoader.getResourceAsStream("pixel-font.ttf");
